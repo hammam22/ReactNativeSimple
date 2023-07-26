@@ -2,6 +2,7 @@ import { Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'rea
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from 'react';
+import { StackActions } from '@react-navigation/native';
 
 
 export default function Plogin({ navigation }){
@@ -84,12 +85,17 @@ var doLogin = function () {
     .then((userCredential) => {
       // Signed in 
       const user = userCredential.user;
-      navigation.push('register',{paramKey:'ssssssss'});
+      navigation.dispatch(
+        StackActions.replace(
+          'home',{paramKey:'ssssssss',auth:auth}
+        )
+        );
+      
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      navigation.navigate('register', {
+      navigation.navigate('home', {
         paramKey: 'ffffffff',
       })
     });
@@ -104,7 +110,12 @@ var doLogin = function () {
         </TouchableOpacity>
 
 
-        <TouchableOpacity>
+        <TouchableOpacity
+        onPress={()=>{navigation.dispatch(
+          StackActions.replace('register')
+        );
+      }}
+        >
           <Text style={{textAlign: 'center'}}>Don't have account already?{"\n"}Signup!!
           </Text>
         </TouchableOpacity>
